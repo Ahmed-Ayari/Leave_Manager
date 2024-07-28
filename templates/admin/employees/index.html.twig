@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Employees{% endblock %}
+
+{% block body %}
+    <div class='nav'>
+        <h1>Leave Manager</h1>
+        <div id="userProfile">
+            <i class="fa-solid fa-circle-user" id="icon"></i>
+            <span>{{ app.user.name }}</span>
+        </div>
+    </div>
+    <div class='employeecard_container'>
+        {% for emp in emps %}
+            <div class='employeecard'>
+                <h2>{{ emp.name }}</h2>
+                <div class='employeecardContent'>
+                    <table>
+                        <tr id='tr1'>
+                            <td>Employee ID</td>
+                            <td>Employee Name</td>
+                            <td>Employee Start Date</td>
+                            <td>Employee Email</td>
+                            <td>Employee Role</td>
+                            <td>Leave Balance</td>
+                        </tr>
+                        <tr>
+                            <td>{{ emp.id }}</td>
+                            <td>{{ emp.name }}</td>
+                            <td>{{ emp.empStartDateFormatted }}</td>
+                            <td>{{ emp.email }}</td>
+                            <td>{% for role in emp.roles %} 
+                                {{ role }}
+                                {% endfor %}
+                            </td>
+                            <td>{{ emp.leaveBalance }}</td>
+                        </tr>
+                    </table>
+                    <div class='employeecardButtons'>
+                        <a href='{{ path('admin_employees_edit', {'id': emp.id}) }}'>
+                            <i class="fa-solid fa-edit empButton"></i>
+                        </a>
+                        <a href='{{ path('admin_employees_delete', {id: emp.id}) }}' >
+                            <i class="fa-solid fa-trash empButton" id="delete"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <a href='{{ path('app_admin_emp_add') }}'>
+            <div class="addEmp">
+                <i class="fa-solid fa-plus"></i>
+                <span>Add Employee</span>
+            </div>
+        </a>
+    </div>
+
+    <div class='sideBar'>
+        <div class='sideBarContent'>
+            <a href='{{ path('app_admin_welcome') }}'>
+                <div class='sideBarItem'>
+                    <i class="fa-solid fa-home"></i>
+                    <span>Home</span>
+                </div>
+            </a>
+            <a href='{{ path('app_admin_employees') }}'>
+                <div class='sideBarItem'>
+                    <i class="fa-solid fa-users"></i>
+                    <span>Employees</span>
+                </div>
+            </a>
+            <a href='{{ path('app_admin_leave_requests') }}'>
+                <div class='sideBarItem'>
+                    <i class="fa-solid fa-users"></i>
+                    <span>Leave requests</span>
+                </div>
+            </a>
+        </div>
+        <a href='{{ path('app_logout') }}' class="logout">
+            <i class="fa-solid fa-sign-out"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+{% endblock %}

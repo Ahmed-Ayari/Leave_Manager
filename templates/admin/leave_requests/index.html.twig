@@ -1,0 +1,136 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Leave Requests{% endblock %}
+
+{% block body %}
+    <div class='nav'>
+        <h1>Leave Manager</h1>
+        <div id="userProfile">
+            <i class="fa-solid fa-circle-user" id="icon"></i>
+            <span>{{ app.user.name }}</span>
+        </div>
+    </div>
+
+    <div class='card_container'>
+        {% for leaveRequest in leaveRequests %}
+            <div class='card'>
+                <h2>Leave Request ID: {{leaveRequest.id}}</h2>
+                <div class='cardContent'>
+                    <table>
+                        <tr id='tr1'>
+                            <td>Employee</td>
+                            <td>Employee ID</td>
+                            <td>Balance</td>
+                            <td>Leave Type</td>
+                            <td>Leave From</td>
+                            <td>Leave To</td>
+                            <td>Reason</td>
+                            {% if leaveRequest.status.value == 'pending' %}
+                                <td>Manager Response</td>
+                            {% endif %}
+                        </tr>
+                        <tr>
+                            <td>{{leaveRequest.emp.name}}</td>
+                            <td>{{leaveRequest.emp.id}}</td>
+                            <td>{{leaveRequest.emp.leaveBalance}}</td>
+                            <td>{{leaveRequest.type.value}}</td>
+                            <td>{{leaveRequest.startDateFormatted}}</td>
+                            <td>{{leaveRequest.endDateFormatted}}</td>
+                            <td>{{leaveRequest.reason}}</td>
+                            {% if leaveRequest.status.value == 'pending' %}
+                                {% if leaveRequest.managerResponse == true %}
+                                    <td>Approved</td>
+                                {% elseif leaveRequest.managerResponse == false %}
+                                    <td>Rejected</td>
+                                {% else %}
+                                    <td>Pending</td>
+                                {% endif %}
+                            {% endif %}
+                        </tr>
+                    </table>
+                </div>
+                {% if leaveRequest.status.value == 'pending' %}
+                    <div class='cardButtons'>
+                        <a href='{{ path('admin_request_approve', {id: leaveRequest.id}) }}'><button class='approve'>Approve</button></a>
+                        <button data-bs-toggle="modal" data-bs-target="#declineModal" data-id="{{ leaveRequest.id }}" class='reject'>Reject</button>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        {# Modal for entering denial reason #}
+        <div class="modal fade" id="declineModal" tabindex="-1" aria-labelledby="declineModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="declineModalLabel">Decline Leave Request</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="declineForm" method="post" onsubmit="return validateForm(event)">
+                            <input type="hidden" name="id" id="leaveRequestId" value="">
+                            <div class="mb-3">
+                                <label for="denyReason" class="form-label">Reason for Decline</label>
+                                <textarea class="form-control" id="denyReason" name="denyReason" required></textarea>
+                                <div class="invalid-feedback">
+                                    Please provide a reason for the decline.
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-danger">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            var declineModal = document.getElementById('declineModal');
+            declineModal.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget; // Button that triggered the modal
+                var leaveRequestId = button.getAttribute('data-id'); // Extract info from data-* attributes
+
+                var modalBodyInput = document.getElementById('leaveRequestId');
+                modalBodyInput.value = leaveRequestId;
+
+                var declineForm = document.getElementById('declineForm');
+                declineForm.action = '{{ path('admin_request_reject', {'id': 'REPLACE_ID'}) }}'.replace('REPLACE_ID', leaveRequestId);
+            });
+
+            document.getElementById('declineForm').addEventListener('submit', function(event) {
+                var denyReason = document.getElementById('denyReason').value.trim();
+                if (!denyReason) {
+                    event.preventDefault();
+                    document.getElementById('denyReason').classList.add('is-invalid');
+                } else {
+                    document.getElementById('denyReason').classList.remove('is-invalid');
+                }
+            });
+        </script>
+    </div>
+
+    <div class='sideBar'>
+        <div class='sideBarContent'>
+            <a href='{{ path('app_admin_welcome') }}'>
+                <div class='sideBarItem'>
+                    <i class="fa-solid fa-home"></i>
+                    <span>Home</span>
+                </div>
+            </a>
+            <a href='{{ path('app_admin_employees') }}'>
+                <div class='sideBarItem'>
+                    <i class="fa-solid fa-users"></i>
+                    <span>Employees</span>
+                </div>
+            </a>
+            <a href='{{ path('app_admin_leave_requests') }}'>
+                <div class='sideBarItem'>
+                    <i class="fa-solid fa-users"></i>
+                    <span>Leave requests</span>
+                </div>
+            </a>
+        </div>
+        <a href='{{ path('app_logout') }}' class="logout">
+            <i class="fa-solid fa-sign-out"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+{% endblock %}

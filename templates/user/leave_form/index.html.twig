@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello LeaveFormController!{% endblock %}
+
+{% block body %}
+    <div class='nav'>
+        <h1>Leave Manager</h1>
+        <div id="userProfile">
+            <i class="fa-solid fa-circle-user" id="icon"></i>
+            <span>{{ app.user.name }}</span>
+        </div>
+    </div>
+
+    {% if pendingRequests is not empty %}
+        <div class="alert alert-warning" id="alert" role="alert">
+            Your leave request is pending
+        </div>
+    {% else %}
+        <div class="example-wrapper ">
+            <h1>Leave Form</h1>
+            
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button type="submit" class="btn btn-primary" value="Submit">Submit</button>
+            {{ form_end(form) }}
+        </div>
+    {% endif %}
+
+
+    <div class='sideBar'>
+        <div class='sideBarContent'>
+            <a href='{{ path('app_user_welcome') }}'>
+                <div class='sideBarItem'>
+                        <i class="fa-solid fa-home"></i>
+                        <span>Home</span>
+                    
+                </div>
+            </a>
+            <a href='{{ path('app_user_leave_form') }}'>
+                <div class='sideBarItem'>
+                        <i class="fa-solid fa-calendar"></i>
+                        <span>leave Form</span>
+                </div>
+            </a>
+            <a href='{{ path('app_user_my_leave_requests') }}'>
+                <div class='sideBarItem'>
+                        <i class="fa-solid fa-user"></i>
+                        <span>My leave requests</span>
+                </div>
+            </a>
+            {% if 'ROLE_MANAGER' in app.user.roles %}
+                <a href='{{ path('app_manager_leave_requests') }}'>
+                    <div class='sideBarItem'>
+                            <i class="fa-solid fa-users"></i>
+                            <span>Leave requests</span>
+                    </div>
+                </a>
+            {% endif %}
+        </div>
+        <a href='{{ path('app_logout') }}' class="logout">
+            <i class="fa-solid fa-sign-out"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+{% endblock %}

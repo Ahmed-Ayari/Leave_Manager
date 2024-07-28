@@ -1,0 +1,50 @@
+.employeecard_container{
+    width: 86%;
+    margin: 85px 0 0 260px;
+}
+
+.employeecard{
+    margin: 0 0 20px 0;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.employeecardButtons{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px; 
+}
+
+.empButton{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+#delete{
+    background-color: #dc3545;
+}
+
+.addEmp{
+    background-color: #03a10b;
+    width: auto;
+    padding: 5px 10px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.fa-eye{
+    color: #007bff;
+    margin-left: 10%;
+}
+
+.fa-eye:hover{
+    cursor: pointer;
+}
+
+

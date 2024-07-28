@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Leave Requests{% endblock %}
+
+{% block body %}
+    <div class='nav'>
+        <h1>Leave Manager</h1>
+        <div id="userProfile">
+            <i class="fa-solid fa-circle-user" id="icon"></i>
+            <span>{{ app.user.name }}</span>
+        </div>
+    </div>
+
+    <div class='myLeaveRequest'>
+        {% if leaveRequests|length == 0 %}
+            <h1 class='pendingTitle'>No Leave Requests</h1>
+        {% endif %}
+        {% for leaveRequest in leaveRequests %}
+            <div class='myLeaveRequest_card'>
+                <h2>Leave Request ID: {{ leaveRequest.id }}</h2>
+                <div class='cardContent'>
+                    <table>
+                        <tr id='tr1'>
+                            <td>Leave Type</td>
+                            <td>Start Date</td>
+                            <td>End Date</td>
+                            <td>Reason</td>
+                            <td>Status</td>
+                            {% if leaveRequest.status.value == 'rejected' %}
+                                <td>Rejection Reason</td>
+                            {% endif %}                
+                        </tr>
+                        <tr>
+                            <td>{{ leaveRequest.type.value }}</td>
+                            <td>{{ leaveRequest.startDateFormatted }}</td>
+                            <td>{{ leaveRequest.endDateFormatted }}</td>
+                            <td>{{ leaveRequest.reason }}</td>
+                            <td>{{ leaveRequest.status.value }}</td>
+                            {% if leaveRequest.status.value == 'rejected' %}
+                                <td>{{ leaveRequest.denyReason }}</td>
+                            {% endif %}
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class='sideBar'>
+        <div class='sideBarContent'>
+            <a href='{{ path('app_user_welcome') }}'>
+                <div class='sideBarItem'>
+                        <i class="fa-solid fa-home"></i>
+                        <span>Home</span>
+                    
+                </div>
+            </a>
+            <a href='{{ path('app_user_leave_form') }}'>
+                <div class='sideBarItem'>
+                        <i class="fa-solid fa-calendar"></i>
+                        <span>leave Form</span>
+                </div>
+            </a>
+            <a href='{{ path('app_user_my_leave_requests') }}'>
+                <div class='sideBarItem'>
+                        <i class="fa-solid fa-user"></i>
+                        <span>My leave requests</span>
+                </div>
+            </a>
+            {% if 'ROLE_MANAGER' in app.user.roles %}
+                <a href='{{ path('app_manager_leave_requests') }}'>
+                    <div class='sideBarItem'>
+                            <i class="fa-solid fa-users"></i>
+                            <span>Leave requests</span>
+                    </div>
+                </a>
+            {% endif %}
+        </div>
+        <a href='{{ path('app_logout') }}' class="logout">
+            <i class="fa-solid fa-sign-out"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+{% endblock %}

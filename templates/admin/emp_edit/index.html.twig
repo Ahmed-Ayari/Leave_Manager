@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Emp edit{% endblock %}
+
+{% block body %}
+    <div class='nav'>
+        <h1>Leave Manager</h1>
+        <div id="userProfile">
+            <i class="fa-solid fa-circle-user" id="icon"></i>
+            <span>{{ app.user.name }}</span>
+        </div>
+    </div>
+
+        <div class="example-wrapper ">
+            <h1>Leave Form</h1>
+            
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button type="submit" class="btn btn-primary" value="Submit">Update</button>
+            {{ form_end(form) }}
+        </div>
+
+    <div class='sideBar'>
+        <div class='sideBarContent'>
+            <a href='{{ path('app_admin_welcome') }}'>
+                <div class='sideBarItem'>
+                    <i class="fa-solid fa-home"></i>
+                    <span>Home</span>
+                </div>
+            </a>
+            <a href='{{ path('app_admin_employees') }}'>
+                <div class='sideBarItem'>
+                    <i class="fa-solid fa-users"></i>
+                    <span>Employees</span>
+                </div>
+            </a>
+            <a href='{{ path('app_admin_leave_requests') }}'>
+                <div class='sideBarItem'>
+                    <i class="fa-solid fa-users"></i>
+                    <span>Leave requests</span>
+                </div>
+            </a>
+        </div>
+        <a href='{{ path('app_logout') }}' class="logout">
+            <i class="fa-solid fa-sign-out"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+{% endblock %}

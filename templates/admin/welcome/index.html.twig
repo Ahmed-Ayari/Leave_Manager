@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Home{% endblock %}
+
+{% block body %}
+    <div class='nav'>
+        <h1>Leave Manager</h1>
+        <div id="userProfile">
+            <i class="fa-solid fa-circle-user" id="icon"></i>
+            <span>{{ app.user.name }}</span>
+        </div>
+    </div>
+
+    <div class='home'>
+        <h1>Welcome {{ app.user.name }}</h1>
+        <h2>You have 
+            <span class="{% if leaveRequests|length > 5 %}text-red{% elseif leaveRequests|length > 0 %}text-orange{% else %}text-green{% endif %}">
+            {{ leaveRequests|length }}
+            </span>
+            pending leave request{% if leaveRequests|length > 1 %}s{% endif %}
+        </h2>
+        {% if leaveRequests|length > 0 %}
+            <a href='{{ path('app_admin_leave_requests') }}' class='submitLeaveBtn'>Review leave request{% if leaveRequests|length > 1 %}s{% endif %}</a>
+        {% endif %}
+    </div>
+
+    <div class='sideBar'>
+        <div class='sideBarContent'>
+            <a href='{{ path('app_admin_welcome') }}'>
+                <div class='sideBarItem'>
+                    <i class="fa-solid fa-home"></i>
+                    <span>Home</span>
+                </div>
+            </a>
+            <a href='{{ path('app_admin_employees') }}'>
+                <div class='sideBarItem'>
+                    <i class="fa-solid fa-users"></i>
+                    <span>Employees</span>
+                </div>
+            </a>
+            <a href='{{ path('app_admin_leave_requests') }}'>
+                <div class='sideBarItem'>
+                    <i class="fa-solid fa-users"></i>
+                    <span>Leave requests</span>
+                </div>
+            </a>
+        </div>
+        <a href='{{ path('app_logout') }}' class="logout">
+            <i class="fa-solid fa-sign-out"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+{% endblock %}
