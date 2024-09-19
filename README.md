@@ -49,7 +49,7 @@ The leave approval process involves two stages; first by the immediate superviso
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Ahmed-Ayari/leave-management-platform.git
+   git clone https://github.com/Ahmed-Ayari/Leave_Manager.git
    ```
 
 2. Install PHP dependencies:
